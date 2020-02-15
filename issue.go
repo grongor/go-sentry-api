@@ -150,58 +150,63 @@ func (c *Client) GetIssues(o Organization, p Project, StatsPeriod *string, Short
 	}
 
 	link, err := c.doWithPaginationQuery(
-		"GET", fmt.Sprintf("projects/%s/%s/issues", *o.Slug, *p.Slug), &issues, nil, issueFilter)
+		"GET", fmt.Sprintf("projects/%s/%s/issues/", *o.Slug, *p.Slug), &issues, nil, issueFilter)
 	return issues, link, err
 }
 
 //GetIssue will fetch a issue by its ID as a string
 func (c *Client) GetIssue(id string) (Issue, error) {
 	var issue Issue
-	err := c.do("GET", fmt.Sprintf("issues/%s", id), &issue, nil)
+	err := c.do("GET", fmt.Sprintf("issues/%s/", id), &issue, nil)
 	return issue, err
 }
 
 //GetIssueHashes will fetch all hashes for a issue
 func (c *Client) GetIssueHashes(i Issue) ([]Hash, *Link, error) {
 	var hashes []Hash
-	link, err := c.doWithPagination("GET", fmt.Sprintf("issues/%s/hashes", *i.ID), &hashes, nil)
+	link, err := c.doWithPagination("GET", fmt.Sprintf("issues/%s/hashes/", *i.ID), &hashes, nil)
 	return hashes, link, err
 }
 
 //GetIssueTags will fetch all tags for a issue
 func (c *Client) GetIssueTags(i Issue) ([]IssueTag, *Link, error) {
 	var tags []IssueTag
-	link, err := c.doWithPagination("GET", fmt.Sprintf("issues/%s/tags", *i.ID), &tags, nil)
+	link, err := c.doWithPagination("GET", fmt.Sprintf("issues/%s/tags/", *i.ID), &tags, nil)
 	return tags, link, err
 }
 
 //GetIssueTag will fetch a tag used in a issue. Eg; environment, release, server
 func (c *Client) GetIssueTag(i Issue, tagname string) (IssueTag, error) {
 	var tag IssueTag
-	err := c.do("GET", fmt.Sprintf("issues/%s/tags/%s", *i.ID, tagname), &tag, nil)
+	err := c.do("GET", fmt.Sprintf("issues/%s/tags/%s/", *i.ID, tagname), &tag, nil)
 	return tag, err
 }
 
 //GetIssueTagValues will fetch all values for a issues tag
 func (c *Client) GetIssueTagValues(i Issue, tag IssueTag) ([]IssueTagValue, *Link, error) {
 	var values []IssueTagValue
-	link, err := c.doWithPagination("GET", fmt.Sprintf("issues/%s/tags/%s/values", *i.ID, tag.Key), &values, nil)
+	link, err := c.doWithPagination("GET", fmt.Sprintf("issues/%s/tags/%s/values/", *i.ID, tag.Key), &values, nil)
 	return values, link, err
 }
 
 //GetIssueEvents will fetch all events for a issue
-func (c *Client) GetIssueEvents(i Issue) ([]Event, *Link, error) {
+func (c *Client) GetIssueEvents(i Issue, full bool) ([]Event, *Link, error) {
+	fullFlag := ""
+	if full {
+		fullFlag = "?full=1"
+	}
+
 	var events []Event
-	link, err := c.doWithPagination("GET", fmt.Sprintf("issues/%s/events", *i.ID), &events, nil)
+	link, err := c.doWithPagination("GET", fmt.Sprintf("issues/%s/events/%s", *i.ID, fullFlag), &events, nil)
 	return events, link, err
 }
 
 //UpdateIssue will update status, assign to, hasseen, isbookmarked and issubscribed
 func (c *Client) UpdateIssue(i Issue) error {
-	return c.do("PUT", fmt.Sprintf("issues/%s", *i.ID), &i, &i)
+	return c.do("PUT", fmt.Sprintf("issues/%s/", *i.ID), &i, &i)
 }
 
 //DeleteIssue will delete an issue
 func (c *Client) DeleteIssue(i Issue) error {
-	return c.do("DELETE", fmt.Sprintf("issues/%s", *i.ID), nil, nil)
+	return c.do("DELETE", fmt.Sprintf("issues/%s/", *i.ID), nil, nil)
 }

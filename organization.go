@@ -7,7 +7,7 @@ import (
 
 const (
 	// OrgEndpointName is set to roganizations
-	OrgEndpointName = "organizations"
+	OrgEndpointName = "organizations/"
 )
 
 // Quota is your quote for a project limit and max rate
@@ -67,6 +67,6 @@ func (c *Client) DeleteOrganization(org Organization) error {
 // GetOrganizationTeams will fetch all teams for this org
 func (c *Client) GetOrganizationTeams(o Organization) ([]Team, error) {
 	teams := make([]Team, 0)
-	err := c.do("GET", fmt.Sprintf("organizations/%s/teams", *o.Slug), &teams, nil)
+	err := c.do("GET", fmt.Sprintf("organizations/%s/teams/", *o.Slug), &teams, nil)
 	return teams, err
 }

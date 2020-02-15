@@ -53,7 +53,7 @@ func (c *Client) CreateProject(o Organization, t Team, name string, slug *string
 		Slug: slug,
 	}
 
-	err := c.do("POST", fmt.Sprintf("teams/%s/%s/projects", *o.Slug, *t.Slug), &proj, projreq)
+	err := c.do("POST", fmt.Sprintf("teams/%s/%s/projects/", *o.Slug, *t.Slug), &proj, projreq)
 	return proj, err
 }
 
@@ -61,23 +61,23 @@ func (c *Client) CreateProject(o Organization, t Team, name string, slug *string
 func (c *Client) GetProject(o Organization, projslug string) (Project, error) {
 	var proj Project
 
-	err := c.do("GET", fmt.Sprintf("projects/%s/%s", *o.Slug, projslug), &proj, nil)
+	err := c.do("GET", fmt.Sprintf("projects/%s/%s/", *o.Slug, projslug), &proj, nil)
 	return proj, err
 }
 
 // UpdateProject takes a organization and project then updates it on the server side
 func (c *Client) UpdateProject(o Organization, p Project) error {
-	return c.do("PUT", fmt.Sprintf("projects/%s/%s", *o.Slug, *p.Slug), &p, &p)
+	return c.do("PUT", fmt.Sprintf("projects/%s/%s/", *o.Slug, *p.Slug), &p, &p)
 }
 
 // GetProjects fetchs all projects in a sentry instance
 func (c *Client) GetProjects() ([]Project, error) {
 	var proj []Project
-	err := c.do("GET", "projects", &proj, nil)
+	err := c.do("GET", "projects/", &proj, nil)
 	return proj, err
 }
 
 // DeleteProject will take your org, team, and proj and delete it from sentry.
 func (c *Client) DeleteProject(o Organization, p Project) error {
-	return c.do("DELETE", fmt.Sprintf("projects/%s/%s", *o.Slug, *p.Slug), nil, nil)
+	return c.do("DELETE", fmt.Sprintf("projects/%s/%s/", *o.Slug, *p.Slug), nil, nil)
 }

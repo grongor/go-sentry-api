@@ -41,31 +41,31 @@ type NewRelease struct {
 // GetRelease will fetch a release from your org and project this does need a version string
 func (c *Client) GetRelease(o Organization, p Project, version string) (Release, error) {
 	var rel Release
-	err := c.do("GET", fmt.Sprintf("projects/%s/%s/releases/%s", *o.Slug, *p.Slug, version), &rel, nil)
+	err := c.do("GET", fmt.Sprintf("projects/%s/%s/releases/%s/", *o.Slug, *p.Slug, version), &rel, nil)
 	return rel, err
 }
 
 // GetReleases will fetch all releases from your org and project
 func (c *Client) GetReleases(o Organization, p Project) ([]Release, *Link, error) {
 	var rel []Release
-	link, err := c.doWithPagination("GET", fmt.Sprintf("projects/%s/%s/releases", *o.Slug, *p.Slug), &rel, nil)
+	link, err := c.doWithPagination("GET", fmt.Sprintf("projects/%s/%s/releases/", *o.Slug, *p.Slug), &rel, nil)
 	return rel, link, err
 }
 
 //CreateRelease will create a new release for a project in a org
 func (c *Client) CreateRelease(o Organization, p Project, r NewRelease) (Release, error) {
 	var rel Release
-	err := c.do("POST", fmt.Sprintf("projects/%s/%s/releases", *o.Slug, *p.Slug), &rel, &r)
+	err := c.do("POST", fmt.Sprintf("projects/%s/%s/releases/", *o.Slug, *p.Slug), &rel, &r)
 	return rel, err
 }
 
 //UpdateRelease will update ref, url, started, released for a release.
 //Version should not change.
 func (c *Client) UpdateRelease(o Organization, p Project, r Release) error {
-	return c.do("PUT", fmt.Sprintf("projects/%s/%s/releases/%s", *o.Slug, *p.Slug, r.Version), &r, &r)
+	return c.do("PUT", fmt.Sprintf("projects/%s/%s/releases/%s/", *o.Slug, *p.Slug, r.Version), &r, &r)
 }
 
 //DeleteRelease will delete the release from your project
 func (c *Client) DeleteRelease(o Organization, p Project, r Release) error {
-	return c.do("DELETE", fmt.Sprintf("projects/%s/%s/releases/%s", *o.Slug, *p.Slug, r.Version), nil, nil)
+	return c.do("DELETE", fmt.Sprintf("projects/%s/%s/releases/%s/", *o.Slug, *p.Slug, r.Version), nil, nil)
 }

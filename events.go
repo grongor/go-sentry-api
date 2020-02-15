@@ -73,7 +73,7 @@ type Event struct {
 	Entries         *[]Entry                `json:"entries,omitempty"`
 	Packages        *map[string]string      `json:"packages,omitempty"`
 	SDK             *map[string]interface{} `json:"sdk,omitempty"`
-	Contexts        *map[string]string      `json:"contexts,omitempty"`
+	Contexts        *map[string]interface{} `json:"contexts,omitempty"`
 	Context         *map[string]interface{} `json:"context,omitempty"`
 	Release         *Release                `json:"release,omitempty"`
 	GroupID         *string                 `json:"groupID,omitempty"`
@@ -82,20 +82,20 @@ type Event struct {
 // GetProjectEvent will fetch a event on a project
 func (c *Client) GetProjectEvent(o Organization, p Project, eventID string) (Event, error) {
 	var event Event
-	err := c.do("GET", fmt.Sprintf("projects/%s/%s/events/%s", *o.Slug, *p.Slug, eventID), &event, nil)
+	err := c.do("GET", fmt.Sprintf("projects/%s/%s/events/%s/", *o.Slug, *p.Slug, eventID), &event, nil)
 	return event, err
 }
 
 //GetLatestEvent will fetch the latest event for a issue
 func (c *Client) GetLatestEvent(i Issue) (Event, error) {
 	var event Event
-	err := c.do("GET", fmt.Sprintf("issues/%s/events/latest", *i.ID), &event, nil)
+	err := c.do("GET", fmt.Sprintf("issues/%s/events/latest/", *i.ID), &event, nil)
 	return event, err
 }
 
 //GetOldestEvent will fetch the latest event for a issue
 func (c *Client) GetOldestEvent(i Issue) (Event, error) {
 	var event Event
-	err := c.do("GET", fmt.Sprintf("issues/%s/events/oldest", *i.ID), &event, nil)
+	err := c.do("GET", fmt.Sprintf("issues/%s/events/oldest/", *i.ID), &event, nil)
 	return event, err
 }

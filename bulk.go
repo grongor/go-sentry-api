@@ -50,7 +50,7 @@ func (c *Client) BulkMutateIssues(o Organization, p Project, req IssueBulkReques
 		Status: status,
 	}
 
-	err := c.doWithQuery("PUT", fmt.Sprintf("projects/%s/%s/issues", *o.Slug, *p.Slug),
+	err := c.doWithQuery("PUT", fmt.Sprintf("projects/%s/%s/issues/", *o.Slug, *p.Slug),
 		&issueBulkResponse, req, mutatequery)
 
 	return issueBulkResponse, err
@@ -61,6 +61,6 @@ func (c *Client) BulkDeleteIssues(o Organization, p Project, issues []string) er
 	mutateQuery := &issueMutateArgs{
 		ID: &issues,
 	}
-	return c.doWithQuery("DELETE", fmt.Sprintf("projects/%s/%s/issues", *o.Slug, *p.Slug),
+	return c.doWithQuery("DELETE", fmt.Sprintf("projects/%s/%s/issues/", *o.Slug, *p.Slug),
 		nil, nil, mutateQuery)
 }

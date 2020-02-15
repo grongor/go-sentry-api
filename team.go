@@ -26,30 +26,30 @@ func (c *Client) CreateTeam(o Organization, name string, slug *string) (Team, er
 		Slug: slug,
 	}
 
-	err := c.do(http.MethodPost, fmt.Sprintf("organizations/%s/teams", *o.Slug), &team, teamreq)
+	err := c.do(http.MethodPost, fmt.Sprintf("organizations/%s/teams/", *o.Slug), &team, teamreq)
 	return team, err
 }
 
 // GetTeam takes a team slug and returns back the team
 func (c *Client) GetTeam(o Organization, teamSlug string) (Team, error) {
 	var team Team
-	err := c.do("GET", fmt.Sprintf("teams/%s/%s", *o.Slug, teamSlug), &team, nil)
+	err := c.do("GET", fmt.Sprintf("teams/%s/%s/", *o.Slug, teamSlug), &team, nil)
 	return team, err
 }
 
 // UpdateTeam will update a team on the server side
 func (c *Client) UpdateTeam(o Organization, t Team) error {
-	return c.do("PUT", fmt.Sprintf("teams/%s/%s", *o.Slug, *t.Slug), &t, &t)
+	return c.do("PUT", fmt.Sprintf("teams/%s/%s/", *o.Slug, *t.Slug), &t, &t)
 }
 
 // DeleteTeam deletes a team from a organization
 func (c *Client) DeleteTeam(o Organization, t Team) error {
-	return c.do(http.MethodDelete, fmt.Sprintf("teams/%s/%s", *o.Slug, *t.Slug), nil, nil)
+	return c.do(http.MethodDelete, fmt.Sprintf("teams/%s/%s/", *o.Slug, *t.Slug), nil, nil)
 }
 
 // GetTeamProjects fetchs all projects for a Team
 func (c *Client) GetTeamProjects(o Organization, t Team) ([]Project, error) {
 	projects := make([]Project, 0)
-	err := c.do("GET", fmt.Sprintf("teams/%s/%s/projects", *o.Slug, *t.Slug), &projects, nil)
+	err := c.do("GET", fmt.Sprintf("teams/%s/%s/projects/", *o.Slug, *t.Slug), &projects, nil)
 	return projects, err
 }

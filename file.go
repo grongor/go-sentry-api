@@ -65,25 +65,25 @@ func (c *Client) UploadReleaseFile(o Organization, p Project, r Release,
 
 // DeleteReleaseFile will remove the file from a sentry release
 func (c *Client) DeleteReleaseFile(o Organization, p Project, r Release, f File) error {
-	return c.do("DELETE", fmt.Sprintf("projects/%s/%s/releases/%s/files/%s", *o.Slug, *p.Slug, r.Version, f.ID),
+	return c.do("DELETE", fmt.Sprintf("projects/%s/%s/releases/%s/files/%s/", *o.Slug, *p.Slug, r.Version, f.ID),
 		nil, nil)
 }
 
 //UpdateReleaseFile will update just the name of the release file
 func (c *Client) UpdateReleaseFile(o Organization, p Project, r Release, f File) error {
-	return c.do("PUT", fmt.Sprintf("projects/%s/%s/releases/%s/files/%s", *o.Slug, *p.Slug, r.Version, f.ID), &f, &f)
+	return c.do("PUT", fmt.Sprintf("projects/%s/%s/releases/%s/files/%s/", *o.Slug, *p.Slug, r.Version, f.ID), &f, &f)
 }
 
 //GetReleaseFiles will fetch all files in a release
 func (c *Client) GetReleaseFiles(o Organization, p Project, r Release) ([]File, error) {
 	var files []File
-	err := c.do("GET", fmt.Sprintf("projects/%s/%s/releases/%s/files", *o.Slug, *p.Slug, r.Version), &files, nil)
+	err := c.do("GET", fmt.Sprintf("projects/%s/%s/releases/%s/files/", *o.Slug, *p.Slug, r.Version), &files, nil)
 	return files, err
 }
 
 //GetReleaseFile will get the release file
 func (c *Client) GetReleaseFile(o Organization, p Project, r Release, id string) (File, error) {
 	var file File
-	err := c.do("GET", fmt.Sprintf("projects/%s/%s/releases/%s/files/%s", *o.Slug, *p.Slug, r.Version, id), &file, nil)
+	err := c.do("GET", fmt.Sprintf("projects/%s/%s/releases/%s/files/%s/", *o.Slug, *p.Slug, r.Version, id), &file, nil)
 	return file, err
 }
